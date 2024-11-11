@@ -8,9 +8,21 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        nunito: ["var(--font-nunito-sans)"],
+        open: ["var(--font-open-sans)"],
+      },
       colors: {
         background: "var(--background)",
-        foreground: "var(--foreground)",
+        "background-secondary": "var(--background-secondary)",
+        "body-background": "var(--body-background)",
+        "body-background-secondary": "var(--body-background-secondary)",
+        "text-main": "var(--text-main)",
+        "text-muted": "var(--text-muted)",
+        "decoration-yellow": "var(--decoration-yellow)",
+        "decoration-teal": "var(--decoration-teal)",
+        primary: "var(--primary)",
+        emphasis: "var(--emphasis)",
       },
     },
   },

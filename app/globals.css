@@ -3,14 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F1F5F8;
+  --background-secondary: #E1F4F6;
+  --text-main: #373737;
+  --text-muted: #8F8F8F;
+  --decoration-yellow: #FCF3CA;
+  --decoration-teal: #69C8BC;
+  --primary: #00CFEA;
+  --emphasis: #EA8800;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #131318;
+    --background-secondary: #2F3E4D;
+    --body-background: #1C1C1F;
+    --body-background-secondary: #202029;
+    --text-main: #EEEEEE;
+    --text-muted: #989898;
   }
 }
 
@@ -18,4 +28,8 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  @apply rounded-full py-2 px-4 text-center text-sm flex items-center font-bold font-open flex gap-1;
 }
