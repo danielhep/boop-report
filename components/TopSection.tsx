@@ -1,9 +1,10 @@
 import { Upload } from "lucide-react";
+import OrcaReader from "./OrcaReader";
 
 export default function TopSection() {
 	return (
 		<div className="grid grid-cols-4 mx-8">
-			<div className="col-span-3 flex flex-col gap-4">
+			<div className="col-span-3 flex flex-col gap-4 justify-center">
 				<h2 className="text-2xl font-bold text-4xl text-primary font-nunito drop-shadow">
 					Boop! This is your ORCA Boop Report!
 				</h2>
@@ -20,7 +21,7 @@ export default function TopSection() {
 					</button>
 				</div>
 			</div>
-			<div>orca reader</div>
+			<OrcaReader number={124} />
 		</div>
 	);
 }
