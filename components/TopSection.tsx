@@ -1,5 +1,6 @@
 import { Upload } from "lucide-react";
 import OrcaReader from "./OrcaReader";
+import UploadButton from "./UploadButton";
 
 export default function TopSection() {
 	return (
@@ -13,9 +14,7 @@ export default function TopSection() {
 					trips using Sound Transit. See how your data compares!
 				</p>
 				<div className="flex gap-4">
-					<button type="button" className="button bg-primary text-black">
-						<Upload /> Upload New Data
-					</button>
+					<UploadButton />
 					<button type="button" className="button bg-[rgba(0,207,234,0.25)] text-primary">
 						How To Find My Data?
 					</button>
