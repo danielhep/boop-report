@@ -1,9 +1,12 @@
 import type { ComponentType } from "react";
+import { AUG_2024_SERVICE_CHANGE_DATE } from "./consts";
+import { isBefore } from "date-fns";
 
 export interface ProcessedOrcaCard {
   fileName: string;
   processed: ProcessedOrcaRow[];
   extraData: ExtraDataType;
+  rawCsvRows: OrcaCSVRow[];
 }
 
 export interface OrcaStats {
@@ -105,16 +108,10 @@ export interface LinkStats {
 export class OrcaTrip {
   /** The boarding event that initiated the trip */
   boarding: ProcessedOrcaRow;
-  /** The alighting event that ended the trip, if available. Only relevant if `routeShortName` is defined in `OrcaTrip.routesExpectingTapOff`. */
+  /** The alighting event that ended the trip, if available. Only if the route requires a tap off. */
   alighting?: ProcessedOrcaRow | undefined;
   /** Any inspection events found to be related to this trip */
   inspections: ProcessedOrcaRow[];
-
-  static routesExpectingTapOff: Array<string | undefined> = [
-    "1-Line",
-    "N Line",
-    "S Line",
-  ];
 
   constructor(boarding: ProcessedOrcaRow, alighting?: ProcessedOrcaRow) {
     this.boarding = boarding;
@@ -123,9 +120,20 @@ export class OrcaTrip {
   }
 
   get expectsTapOff(): boolean {
-    return OrcaTrip.routesExpectingTapOff.includes(
-      this.boarding.routeShortName
-    );
+    const routeShortName = this.boarding.routeShortName;
+    if (!routeShortName) return false;
+
+    // N-Line and S-Line always require tap off
+    if (routeShortName === "N-Line" || routeShortName === "S-Line") {
+      return true;
+    }
+
+    // 1-Line and 2-Line require tap off only before Aug 2024
+    if (routeShortName === "1-Line" || routeShortName === "2-Line") {
+      return isBefore(this.boarding.time, AUG_2024_SERVICE_CHANGE_DATE);
+    }
+
+    return false;
   }
 
   get isMissingTapOff(): boolean {

@@ -80,16 +80,11 @@ function lineToRouteShortName(time: Date, string?: string): string | undefined {
 		case "Everett - Lynnwood":
 			return "512";
 		case "Ash Way P&R - Seattle":
-		case "Ash Way P&R - Northgate Station": //future-proofing
 			return "511";
-		case "Everett - Northgate Station": //future-proofing
-			return "512";
 		case "Seaway Transit Center - Seattle":
 		case "Seaway - Lynnwood":
-		case "Seaway Transit Center - Northgate Station": //future-proofing
 			return "513";
 		case "Woodinville - Seattle":
-		case "Woodinville - Roosevelt Link Station": //future-proofing
 			return "522";
 		case "Everett - Bellevue":
 			return "532";
@@ -133,7 +128,9 @@ function lineToRouteShortName(time: Date, string?: string): string | undefined {
 		case "Bonney Lake - Sumner":
 			return "596";
 		case "KCM Bus":
-			return "G Line";
+			return "KCM Unknown";
+    case "Default ST Bus":
+      return "ST Bus Uknown";
 		// Community Transit 900 routes
 		case "Lynnwood City Center Station - Silver Firs":
 			return "901";
@@ -233,12 +230,12 @@ export function processAllRows(rows: OrcaCSVRow[]): ProcessedOrcaRow[] {
 
 function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
 	const trips = findTripsFromTaps(data);
-	const firstTrip = trips[0];
-	const lastTrip = trips[trips.length - 1];
-	const interval = {
-		start: firstTrip.boarding.time,
-		end: lastTrip.boarding.time,
-	};
+
+	const interval = trips.length > 0 ? {
+		start: trips[0].boarding.time,
+		end: trips[trips.length - 1].boarding.time,
+	} : { start: new Date(), end: new Date() }; // Default interval if no trips
+
 	return {
 		routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
 		agencyOccurrences: agencyOccurrences(trips.map((t) => t.boarding)),
@@ -252,7 +249,7 @@ function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
 	};
 }
 
-function processOrcaCard(
+export function processOrcaCard(
 	unprocessedOrcaCard: UnprocessedOrcaCard,
 ): ProcessedOrcaCard {
 	const processed = processAllRows(unprocessedOrcaCard.rawCsvRows);
@@ -260,6 +257,7 @@ function processOrcaCard(
 		processed: processed,
 		extraData: generateExtraDataObject(processed),
 		fileName: unprocessedOrcaCard.fileName,
+    rawCsvRows: unprocessedOrcaCard.rawCsvRows,
 	};
 }
 
@@ -285,8 +283,7 @@ function aggregateExtraDataObjects(
 	cardData: ProcessedOrcaCard[],
 ): ExtraDataType {
 	const extraDataObjects = cardData.map((cd) => cd.extraData);
-	// Creates a new object of all route occurrences by summing the values from input array
-	// where the agency and line match.
+
 	const routeOccurrences = extraDataObjects
 		.flatMap((edo) => edo.routeOccurrences)
 		.reduce<IndividualRouteOccurrences[]>((prev, cur) => {
@@ -354,6 +351,7 @@ function aggregateExtraDataObjects(
 				return prev;
 			}, []),
 	};
+
 	return {
 		routeOccurrences,
 		agencyOccurrences,
@@ -364,7 +362,7 @@ function aggregateExtraDataObjects(
 	};
 }
 
-export function generateAppState(
+export function generateOrcaStats(
 	unprocessedOrcaData: UnprocessedOrcaCard[],
 ): OrcaStats {
 	const processedData: ProcessedOrcaCard[] =
@@ -393,7 +391,7 @@ export function parseOrcaFileCsvSync(
 	fileName: string,
 ): OrcaStats {
 	const parsedCsv = Papa.parse(csvString, { header: true });
-	return generateAppState([
+	return generateOrcaStats([
 		{
 			rawCsvRows: parsedCsv.data as OrcaCSVRow[],
 			fileName,

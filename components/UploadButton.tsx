@@ -2,19 +2,20 @@
 
 import { Upload } from "lucide-react";
 import { useRef } from "react";
+import { useHydratedOrcaStore } from "@/lib/store/orcaStore";
 
 export default function UploadButton() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const uploadFiles = useHydratedOrcaStore(state => state.uploadFiles);
 
 	const handleClick = () => {
 		fileInputRef.current?.click();
 	};
 
-	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file) {
-			// TODO: Handle the file upload
-			console.log("Selected file:", file);
+	const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+		const files = Array.from(event.target.files || []);
+		if (files.length > 0) {
+			await uploadFiles(files);
 		}
 	};
 

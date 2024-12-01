@@ -1,5 +1,7 @@
-import { processAllRows } from "../processingUtils";
-import type { OrcaCSVRow } from "../types";
+import { parseOrcaFileCsvSync, processAllRows } from "../processingUtils";
+import type { OrcaCSVRow, OrcaStats } from "../types";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
 export function findUndefinedRouteNames(rows: OrcaCSVRow[]): {line: string | undefined, agency: string}[] {
     const processed = processAllRows(rows);
@@ -16,3 +18,9 @@ export function findUndefinedRouteNames(rows: OrcaCSVRow[]): {line: string | und
         )
       )
   }
+
+export function loadAndProcessTestFile(fileName: string): OrcaStats {
+  const csvPath = path.join(__dirname, "../../test_files", fileName);
+  const fileContent = readFileSync(csvPath, "utf-8");
+  return parseOrcaFileCsvSync(fileContent, fileName);
+}
