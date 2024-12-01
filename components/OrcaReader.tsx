@@ -1,10 +1,14 @@
+"use client";
+
+import { useHydratedOrcaStore } from "@/lib/store/orcaStore";
 import React from "react";
 
-const OrcaReader = ({ number }: { number: number }) => {
+const OrcaReader = () => {
+	const totalTaps = useHydratedOrcaStore((state) => state.processedStats?.aggregateExtraData.totalTaps);
 	// Validate number is between 1-4 digits
 	const validNumber = Math.max(
 		0,
-		Math.min(9999, Math.floor(Number(number) || 0)),
+		Math.min(9999, Math.floor(Number(totalTaps) || 0)),
 	);
 
 	// Calculate font size based on number of digits

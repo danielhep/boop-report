@@ -86,6 +86,7 @@ export interface ExtraDataType {
     expected: number;
     missing: number;
   };
+  totalTaps: number;
   linkStats: LinkStats;
 }
 

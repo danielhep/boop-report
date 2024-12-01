@@ -18,7 +18,7 @@ import {
 	type LinkStationStats,
 	type IndividualAgencyOccurences,
 	type DayRideCount,
-  type OrcaStats,
+	type OrcaStats,
 } from "./types";
 import {
 	agencyOccurrences,
@@ -129,8 +129,8 @@ function lineToRouteShortName(time: Date, string?: string): string | undefined {
 			return "596";
 		case "KCM Bus":
 			return "KCM Unknown";
-    case "Default ST Bus":
-      return "ST Bus Uknown";
+		case "Default ST Bus":
+			return "ST Bus Uknown";
 		// Community Transit 900 routes
 		case "Lynnwood City Center Station - Silver Firs":
 			return "901";
@@ -231,10 +231,13 @@ export function processAllRows(rows: OrcaCSVRow[]): ProcessedOrcaRow[] {
 function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
 	const trips = findTripsFromTaps(data);
 
-	const interval = trips.length > 0 ? {
-		start: trips[0].boarding.time,
-		end: trips[trips.length - 1].boarding.time,
-	} : { start: new Date(), end: new Date() }; // Default interval if no trips
+	const interval =
+		trips.length > 0
+			? {
+					start: trips[0].boarding.time,
+					end: trips[trips.length - 1].boarding.time,
+				}
+			: { start: new Date(), end: new Date() }; // Default interval if no trips
 
 	return {
 		routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
@@ -246,6 +249,7 @@ function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
 			missing: trips.filter((t) => t.isMissingTapOff).length,
 		},
 		linkStats: linkStats(trips),
+		totalTaps: data.length,
 	};
 }
 
@@ -257,7 +261,7 @@ export function processOrcaCard(
 		processed: processed,
 		extraData: generateExtraDataObject(processed),
 		fileName: unprocessedOrcaCard.fileName,
-    rawCsvRows: unprocessedOrcaCard.rawCsvRows,
+		rawCsvRows: unprocessedOrcaCard.rawCsvRows,
 	};
 }
 
@@ -352,8 +356,14 @@ function aggregateExtraDataObjects(
 			}, []),
 	};
 
+	const totalTaps = extraDataObjects.reduce(
+		(prev, cur) => prev + cur.totalTaps,
+		0,
+	);
+
 	return {
 		routeOccurrences,
+		totalTaps,
 		agencyOccurrences,
 		ridesByDate,
 		trips,

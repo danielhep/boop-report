@@ -1,6 +1,6 @@
-import { Upload } from "lucide-react";
 import OrcaReader from "./OrcaReader";
 import UploadButton from "./UploadButton";
+import { useHydratedOrcaStore } from "@/lib/store/orcaStore";
 
 export default function TopSection() {
 	return (
@@ -20,7 +20,7 @@ export default function TopSection() {
 					</button>
 				</div>
 			</div>
-			<OrcaReader number={124} />
+			<OrcaReader/>
 		</div>
 	);
 }
