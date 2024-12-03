@@ -1,10 +1,10 @@
 "use client";
 
-import { useHydratedOrcaStore } from "@/lib/store/orcaStore";
 import React from "react";
+import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 
 const OrcaReader = () => {
-	const totalTaps = useHydratedOrcaStore((state) => state.processedStats?.aggregateExtraData.totalTaps);
+	const totalTaps = useOrcaStore((state) => state.processedStats?.aggregateExtraData.totalTaps);
 	// Validate number is between 1-4 digits
 	const validNumber = Math.max(
 		0,
