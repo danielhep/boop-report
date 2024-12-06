@@ -12,6 +12,7 @@
   "dependencies": {
     "@nivo/core": "^0.88.0",
     "@nivo/line": "^0.88.0",
+    "@nivo/calendar": "^0.88.0",
     "date-fns": "^4.1.0",
     "lucide": "^0.456.0",
     "lucide-react": "^0.456.0",
