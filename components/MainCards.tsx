@@ -1,6 +1,7 @@
 import Card from "./Card";
 import RidesCalendar from "./RidesCalendar";
 import RidesChart from "./RidesChart";
+import TopRoutesChart from "./TopRoutesChart";
 
 export default function MainCards() {
 	return (
@@ -13,7 +14,7 @@ export default function MainCards() {
 				<h2 className="text-lg font-semibold mb-4">Ride Calendar</h2>
 				<RidesCalendar />
 			</Card>
-            <Card>Another card</Card>
+            <Card><TopRoutesChart /></Card>
 		</div>
 	);
 }
