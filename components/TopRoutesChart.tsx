@@ -76,7 +76,7 @@ export default function TopRoutesChart() {
                         <br />
                         {datum.value} {datum.value === 1 ? 'ride' : 'rides'}
                         <br />
-                        {datum.percentage}% of total rides
+                        {`${(datum.value / totalRides * 100).toFixed(1)}% of total rides`}
                     </div>
                 )}
             />
