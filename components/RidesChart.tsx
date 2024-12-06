@@ -4,14 +4,6 @@ import { ResponsiveLine } from "@nivo/line";
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 import { format } from "date-fns";
 import { useState } from "react";
-import PillSelect from "./PillSelect";
-
-type PointClickHandler = {
-	data: {
-		x: string | number | Date;
-		y: number;
-	};
-};
 
 export default function RidesChart() {
 	const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
@@ -70,7 +62,6 @@ export default function RidesChart() {
 
 	return (
 		<div className="h-[300px] w-full relative">
-            {/* <PillSelect options={["Month", "Week"]} defaultSelected={undefined} onChange={} /> */}
 			<ResponsiveLine
 				data={chartData}
 				margin={{ top: 20, right: 20, bottom: 50, left: 50 }}
@@ -107,6 +98,13 @@ export default function RidesChart() {
 						},
 					},
 				}}
+				tooltip={({ point }) => (
+					<div className="bg-slate-800 text-slate-200 px-3 py-2 rounded-md shadow-lg">
+						<strong>{`${point.data.x}`}</strong>
+						<br />
+						{`${point.data.y} ${point.data.y === 1 ? "ride" : "rides"}`}
+					</div>
+				)}
 			/>
 		</div>
 	);
