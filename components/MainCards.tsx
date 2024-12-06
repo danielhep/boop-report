@@ -1,6 +1,7 @@
 import Card from "./Card";
 import RidesCalendar from "./RidesCalendar";
 import RidesChart from "./RidesChart";
+import TopAgenciesChart from "./TopAgenciesChart";
 import TopRoutesChart from "./TopRoutesChart";
 
 export default function MainCards() {
@@ -10,11 +11,20 @@ export default function MainCards() {
 				<h2 className="text-lg font-semibold mb-4">Rides per Month</h2>
 				<RidesChart />
 			</Card>
-			<Card className="col-span-2">
+			<Card className="col-span-2 flex flex-col">
 				<h2 className="text-lg font-semibold mb-4">Ride Calendar</h2>
-				<RidesCalendar />
+				<div className="flex-1 flex items-center">
+					<RidesCalendar />
+				</div>
 			</Card>
-            <Card><TopRoutesChart /></Card>
+			<Card>
+				<h2 className="text-lg font-semibold mb-4">Top Routes</h2>
+				<TopRoutesChart />
+			</Card>
+			<Card>
+				<h2 className="text-lg font-semibold mb-4">Top Agencies</h2>
+				<TopAgenciesChart />
+			</Card>
 		</div>
 	);
 }

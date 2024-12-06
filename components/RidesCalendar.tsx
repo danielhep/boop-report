@@ -44,7 +44,7 @@ export default function RidesCalendar() {
     };
 
     return (
-        <div className="h-[200px] w-full relative">
+        <div className="h-full w-full relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
                 <button 
                     type="button"
@@ -64,7 +64,7 @@ export default function RidesCalendar() {
                     <ArrowDown size={20} />
                 </button>
             </div>
-            <div className="pl-16 h-full    "> {/* Add padding to make room for the year selector */}
+            <div className="pl-16 h-full">
                 <ResponsiveCalendar
                     data={calendarData}
                     from={new Date(selectedYear, 0, 1)}
