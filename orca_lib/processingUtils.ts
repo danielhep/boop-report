@@ -292,7 +292,7 @@ function aggregateExtraDataObjects(
 		.flatMap((edo) => edo.routeOccurrences)
 		.reduce<IndividualRouteOccurrences[]>((prev, cur) => {
 			const indexOfMatch = prev.findIndex(
-				(p) => p.line === cur.line && p.agencyName === cur.agencyName,
+				(p) => p.routeShortName === cur.routeShortName && p.agencyName === cur.agencyName,
 			);
 			if (indexOfMatch !== -1) {
 				prev[indexOfMatch].count += cur.count;

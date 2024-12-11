@@ -65,7 +65,6 @@ export interface IndividualAgencyOccurences {
 }
 
 export interface IndividualRouteOccurrences {
-  line: string | undefined;
   count: number;
   agencyName: string;
   routeShortName?: string;

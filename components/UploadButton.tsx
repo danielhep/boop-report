@@ -27,6 +27,7 @@ export default function UploadButton() {
 				onChange={handleFileChange}
 				className="hidden"
 				accept=".csv,.txt"
+				multiple
 			/>
 			<button
 				type="button"

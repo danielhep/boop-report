@@ -5,7 +5,15 @@ import { format, getYear, isWithinInterval, startOfYear, endOfYear } from "date-
 import { ArrowUp, ArrowDown } from "lucide-react";
 import { useState } from "react";
 
-export default function RidesCalendar() {
+export default function RidesCalendarCard() {
+    return (
+        <div className="h-full w-full relative">
+            <RidesCalendar />
+        </div>
+    );
+}
+
+function RidesCalendar() {
     const ridesByDate = useOrcaStore(
         (state) => state.processedStats?.aggregateExtraData.ridesByDate
     );
@@ -31,8 +39,6 @@ export default function RidesCalendar() {
         day: format(ride.jsDate, "yyyy-MM-dd"),
         value: ride.value
     }));
-
-    console.log(calendarData);
 
     const handleYearChange = (direction: 'up' | 'down') => {
         const currentIndex = years.indexOf(selectedYear);

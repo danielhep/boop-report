@@ -1,28 +1,25 @@
-import Card from "./Card";
-import RidesCalendar from "./RidesCalendar";
-import RidesChart from "./RidesChart";
-import TopAgenciesChart from "./TopAgenciesChart";
-import TopRoutesChart from "./TopRoutesChart";
+import Card, { CardHeader } from "./Card";
+import RidesCalendar from "./cards/RidesCalendar";
+import RidesChart from "./cards/RidesChart";
+import TopAgenciesChart from "./cards/TopAgenciesChart";
+import TopRoutesChart from "./cards/TopRoutesChart";
 
 export default function MainCards() {
 	return (
 		<div className="grid grid-cols-3 gap-4 mx-8">
 			<Card className="col-span-3">
-				<h2 className="text-lg font-semibold mb-4">Rides per Month</h2>
+				<CardHeader>Rides per Month</CardHeader>
 				<RidesChart />
 			</Card>
 			<Card className="col-span-2 flex flex-col">
-				<h2 className="text-lg font-semibold mb-4">Ride Calendar</h2>
-				<div className="flex-1 flex items-center">
-					<RidesCalendar />
-				</div>
+				<CardHeader>Ride Calendar</CardHeader>
+				<RidesCalendar />
 			</Card>
 			<Card>
-				<h2 className="text-lg font-semibold mb-4">Top Routes</h2>
 				<TopRoutesChart />
 			</Card>
 			<Card>
-				<h2 className="text-lg font-semibold mb-4">Top Agencies</h2>
+				<CardHeader>Top Agencies</CardHeader>
 				<TopAgenciesChart />
 			</Card>
 		</div>

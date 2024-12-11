@@ -68,7 +68,6 @@ export function agencyOccurrences(
 }
 
 export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
-	line: string | undefined;
 	count: number;
 	agencyName: string;
 	routeShortName?: string;
@@ -78,7 +77,6 @@ export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
 		[key: string]: {
 			// Route
 			[key: string]: {
-				line: string | undefined;
 				count: number;
 				agencyName: string;
 				routeShortName?: string;
@@ -87,27 +85,27 @@ export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
 	} = {};
 
 	for (const row of data) {
-		const lineKey = row.line ?? "UNKNOWN_ROUTE";
+		const shortNameKey = row.routeShortName ?? "UNKNOWN_ROUTE";
 		if (!(row.agency in countByAgencyThenRoute)) {
 			countByAgencyThenRoute[row.agency] = {};
 		}
-		if (!(lineKey in countByAgencyThenRoute[row.agency])) {
-			countByAgencyThenRoute[row.agency][lineKey] = {
-				line: row.line,
+		if (!(shortNameKey in countByAgencyThenRoute[row.agency])) {
+			countByAgencyThenRoute[row.agency][shortNameKey] = {
 				count: 0,
 				agencyName: row.agency,
 				routeShortName: row.routeShortName,
 			};
 		}
-		countByAgencyThenRoute[row.agency][lineKey].count += 1;
+		countByAgencyThenRoute[row.agency][shortNameKey].count += 1;
 	}
 
 	const routeCounts = Object.keys(countByAgencyThenRoute)
 		.flatMap((agencyName) => {
 			return Object.values(countByAgencyThenRoute[agencyName]);
 		})
-		.filter((d) => d.line)
+		.filter((d) => d.routeShortName)
 		.sort((a, b) => b.count - a.count);
+		console.log(routeCounts)
 
 	return routeCounts;
 }
