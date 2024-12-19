@@ -5,8 +5,8 @@ import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { persist, createJSONStorage } from "zustand/middleware"
 import { devtools } from "zustand/middleware"
-import { generateOrcaStats, parseOrcaFiles } from "@/orca_lib/processingUtils"
-import type { OrcaStats, UnprocessedOrcaCard } from "@/orca_lib/types"
+import { generateOrcaStats, parseOrcaFiles } from "@/lib/orca/processingUtils"
+import type { OrcaStats, UnprocessedOrcaCard } from "@/lib/orca/types"
 
 // Define store types
 export interface OrcaState {
