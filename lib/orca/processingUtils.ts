@@ -1,9 +1,7 @@
 import {
 	differenceInMilliseconds,
-	isAfter,
 	isBefore,
 	parse,
-	previousDay,
 } from "date-fns";
 import Papa from "papaparse";
 import {
@@ -19,14 +17,16 @@ import {
 	type IndividualAgencyOccurences,
 	type DayRideCount,
 	type OrcaStats,
+	type VehicleOccurrence,
 } from "./types";
 import {
 	agencyOccurrences,
 	linkStats,
 	ridesByDate,
 	routeOccurrences,
+	vehicleOccurrences,
 } from "./basicStats";
-import { dollarStringToNumber, parseActivity } from "./propertyTransformations";
+import { dollarStringToNumber, parseActivity, parseReaderNumber } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 import { AUG_2024_SERVICE_CHANGE_DATE } from "./consts";
 
@@ -203,7 +203,7 @@ export function getIdealRouteShortName(
 
 export function processAllRows(rows: OrcaCSVRow[]): ProcessedOrcaRow[] {
 	return (
-		rows?.map((row) => {
+		rows?.map<ProcessedOrcaRow>((row) => {
 			const time = parse(
 				`${row.Date} ${row.Time}`,
 				"M/d/yyyy h:mmaa",
@@ -222,6 +222,7 @@ export function processAllRows(rows: OrcaCSVRow[]): ProcessedOrcaRow[] {
 				routeShortName,
 				agency: row.Agency,
 				activity: parseActivity(row.Activity),
+				readerNumber: parseReaderNumber(row.Activity),
 				declined: row.Activity.toLowerCase().includes("declined"),
 			};
 		}) || []
@@ -242,6 +243,7 @@ function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
 	return {
 		routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
 		agencyOccurrences: agencyOccurrences(trips.map((t) => t.boarding)),
+		vehicleOccurrences: vehicleOccurrences(trips.map((t) => t.boarding)),
 		ridesByDate: ridesByDate(trips, interval),
 		trips: trips,
 		tapOffBehavior: {
@@ -314,6 +316,21 @@ function aggregateExtraDataObjects(
 			return prev;
 		}, []);
 
+	const vehicleOccurrences = extraDataObjects
+		.flatMap((edo) => edo.vehicleOccurrences)
+		.reduce<VehicleOccurrence[]>((prev, cur) => {
+			const indexOfMatch = prev.findIndex(
+				(p) => p.vehicleId === cur.vehicleId && p.agencyName === cur.agencyName,
+			);
+			if (indexOfMatch !== -1) {
+				prev[indexOfMatch].count += cur.count;
+			} else {
+				prev.push(cur);
+			}
+			return prev;
+		}, []);
+
+		
 	const ridesByDate = extraDataObjects
 		.flatMap((edo) => edo.ridesByDate)
 		.reduce<DayRideCount[]>((prev, cur) => {
@@ -369,6 +386,7 @@ function aggregateExtraDataObjects(
 		trips,
 		tapOffBehavior,
 		linkStats,
+		vehicleOccurrences,
 	};
 }
 

@@ -56,6 +56,7 @@ export interface ProcessedOrcaRow {
   routeShortName?: string;
   agency: string;
   activity: ActivityType;
+  readerNumber?: ReaderNumber;
   declined: boolean;
 }
 
@@ -79,6 +80,7 @@ export interface DayRideCount {
 export interface ExtraDataType {
   routeOccurrences: Array<IndividualRouteOccurrences>;
   agencyOccurrences: Array<IndividualAgencyOccurences>;
+  vehicleOccurrences: Array<VehicleOccurrence>;
   ridesByDate: Array<DayRideCount>;
   trips: OrcaTrip[];
   tapOffBehavior: {
@@ -158,4 +160,17 @@ export interface WrappedCard {
   cardName: string;
   score: (state: OrcaStats) => number;
   Component: ComponentType;
+}
+
+export type ReaderNumberType = "BUS" | "DEVICE";
+
+export interface ReaderNumber {
+  type: ReaderNumberType;
+  number: string;
+}
+
+export interface VehicleOccurrence {
+  count: number;
+  vehicleId: string;
+  agencyName: string;
 }

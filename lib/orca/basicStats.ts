@@ -1,6 +1,5 @@
 import {
 	type Interval,
-	differenceInMilliseconds,
 	eachDayOfInterval,
 	formatISO,
 	isSameDay,
@@ -12,6 +11,7 @@ import type {
 	LinkStats,
 	OrcaTrip,
 	ProcessedOrcaRow,
+	VehicleOccurrence,
 } from "./types";
 
 const LINK_DOOR_SIDE: Record<string, DoorSides> = {
@@ -105,9 +105,34 @@ export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
 		})
 		.filter((d) => d.routeShortName)
 		.sort((a, b) => b.count - a.count);
-		console.log(routeCounts)
+	console.log(routeCounts);
 
 	return routeCounts;
+}
+
+export function vehicleOccurrences(data: ProcessedOrcaRow[]): Array<VehicleOccurrence> {
+	return data.reduce(
+		(acc, row) => {
+			if (row.readerNumber?.number && row.readerNumber.type === "BUS") {
+				const index = acc.findIndex(
+					(v) =>
+						v.vehicleId === row.readerNumber?.number &&
+						v.agencyName === row.agency,
+				);
+				if (index === -1) {
+					acc.push({
+						count: 1,
+						vehicleId: row.readerNumber?.number,
+						agencyName: row.agency,
+					});
+				} else {
+					acc[index].count++;
+				}
+			}
+			return acc;
+		},
+		[] as Array<{ count: number; vehicleId: string; agencyName: string }>,
+	);
 }
 
 export function linkStats(trips: OrcaTrip[]): LinkStats {

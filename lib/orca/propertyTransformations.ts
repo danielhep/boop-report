@@ -1,4 +1,4 @@
-import { ActivityType } from "./types";
+import { ActivityType, ReaderNumberType, ReaderNumber } from "./types";
 
 export function dollarStringToNumber(val: string): number {
   const split = val.split("$");
@@ -32,4 +32,16 @@ export function parseActivity(activity: string): ActivityType {
     default:
       return ActivityType.UNKNOWN;
   }
+}
+
+export function parseReaderNumber(activity: string): ReaderNumber | undefined {
+  const regex = /(?:(Bus|Device) number:)\s*(\d+)/;
+  const match = activity.match(regex);
+  
+  if (!match) return undefined;
+  
+  return {
+    type: match[1].toUpperCase() as ReaderNumberType,
+    number: match[2]
+  };
 }
