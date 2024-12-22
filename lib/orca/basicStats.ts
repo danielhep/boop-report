@@ -12,6 +12,7 @@ import type {
 	OrcaTrip,
 	ProcessedOrcaRow,
 	VehicleOccurrence,
+	StopOccurrence,
 } from "./types";
 
 const LINK_DOOR_SIDE: Record<string, DoorSides> = {
@@ -105,7 +106,6 @@ export function routeOccurrences(data: ProcessedOrcaRow[]): Array<{
 		})
 		.filter((d) => d.routeShortName)
 		.sort((a, b) => b.count - a.count);
-	console.log(routeCounts);
 
 	return routeCounts;
 }
@@ -166,4 +166,24 @@ export function linkStats(trips: OrcaTrip[]): LinkStats {
 		.sort((a, b) => b.count - a.count);
 
 	return { stationStats: stationStatsAsArray, linkTrips };
+}
+
+export function stopOccurrences(data: ProcessedOrcaRow[]): Array<StopOccurrence> {
+	const countByStop: Record<string, StopOccurrence> = {};
+
+	for (const row of data) {
+		if (row.stop) {
+			const key = `${row.stop}|${row.agency}`;
+			if (!(key in countByStop)) {
+				countByStop[key] = {
+					count: 0,
+					stop: row.stop,
+					agencyName: row.agency,
+				};
+			}
+			countByStop[key].count += 1;
+		}
+	}
+
+	return Object.values(countByStop).sort((a, b) => b.count - a.count);
 }

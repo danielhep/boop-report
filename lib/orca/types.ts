@@ -77,10 +77,17 @@ export interface DayRideCount {
   value: number;
 }
 
+export interface StopOccurrence {
+  count: number;
+  stop: string;
+  agencyName: string;
+}
+
 export interface ExtraDataType {
   routeOccurrences: Array<IndividualRouteOccurrences>;
   agencyOccurrences: Array<IndividualAgencyOccurences>;
   vehicleOccurrences: Array<VehicleOccurrence>;
+  stopOccurrences: Array<StopOccurrence>;
   ridesByDate: Array<DayRideCount>;
   trips: OrcaTrip[];
   tapOffBehavior: {

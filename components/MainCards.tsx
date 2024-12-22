@@ -4,6 +4,7 @@ import RidesChart from "./cards/RidesChart";
 import TopAgenciesChart from "./cards/TopAgenciesChart";
 import TopRoutesChart from "./cards/TopRoutesChart";
 import TopVehiclesChart from "./cards/TopVehiclesChart";
+import TopStopsChartCard from "./cards/TopStopsChart";
 
 export default function MainCards() {
 	return (
@@ -24,6 +25,9 @@ export default function MainCards() {
 			</Card>
 			<Card>
 				<TopVehiclesChart />
+			</Card>
+			<Card>	
+				<TopStopsChartCard />
 			</Card>
 		</div>
 	);

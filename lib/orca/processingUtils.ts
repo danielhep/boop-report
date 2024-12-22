@@ -18,6 +18,7 @@ import {
 	type DayRideCount,
 	type OrcaStats,
 	type VehicleOccurrence,
+	type StopOccurrence,
 } from "./types";
 import {
 	agencyOccurrences,
@@ -25,6 +26,7 @@ import {
 	ridesByDate,
 	routeOccurrences,
 	vehicleOccurrences,
+	stopOccurrences,
 } from "./basicStats";
 import { dollarStringToNumber, parseActivity, parseReaderNumber } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
@@ -244,6 +246,7 @@ function generateExtraDataObject(data: ProcessedOrcaRow[]): ExtraDataType {
 		routeOccurrences: routeOccurrences(trips.map((t) => t.boarding)),
 		agencyOccurrences: agencyOccurrences(trips.map((t) => t.boarding)),
 		vehicleOccurrences: vehicleOccurrences(trips.map((t) => t.boarding)),
+		stopOccurrences: stopOccurrences(trips.map((t) => t.boarding)),
 		ridesByDate: ridesByDate(trips, interval),
 		trips: trips,
 		tapOffBehavior: {
@@ -285,9 +288,7 @@ function findProblematicData(orcaData: ProcessedOrcaCard[]) {
 	}
 }
 
-function aggregateExtraDataObjects(
-	cardData: ProcessedOrcaCard[],
-): ExtraDataType {
+function aggregateExtraDataObjects(cardData: ProcessedOrcaCard[]): ExtraDataType {
 	const extraDataObjects = cardData.map((cd) => cd.extraData);
 
 	const routeOccurrences = extraDataObjects
@@ -330,7 +331,21 @@ function aggregateExtraDataObjects(
 			return prev;
 		}, []);
 
-		
+	const stopOccurrences = extraDataObjects
+		.flatMap((edo) => edo.stopOccurrences)
+		.reduce<StopOccurrence[]>((prev, cur) => {
+			const indexOfMatch = prev.findIndex(
+				(p) => p.stop === cur.stop && p.agencyName === cur.agencyName
+			);
+			if (indexOfMatch !== -1) {
+				prev[indexOfMatch].count += cur.count;
+			} else {
+				prev.push(cur);
+			}
+			return prev;
+		}, [])
+		.sort((a, b) => b.count - a.count);
+
 	const ridesByDate = extraDataObjects
 		.flatMap((edo) => edo.ridesByDate)
 		.reduce<DayRideCount[]>((prev, cur) => {
@@ -382,6 +397,7 @@ function aggregateExtraDataObjects(
 		routeOccurrences,
 		totalTaps,
 		agencyOccurrences,
+		stopOccurrences,
 		ridesByDate,
 		trips,
 		tapOffBehavior,
