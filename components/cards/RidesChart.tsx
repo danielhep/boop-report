@@ -4,6 +4,8 @@ import { ResponsiveLine } from "@nivo/line";
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 import { format } from "date-fns";
 import { useState } from "react";
+import { CardHeader } from "../Card";
+import { ArrowLeft } from "lucide-react";
 
 export default function RidesChart() {
 	const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
@@ -63,9 +65,28 @@ export default function RidesChart() {
 	};
 
 	return (
-		<div className="h-[300px] w-full relative">
-			<ResponsiveLine
-				data={chartData}
+		<>
+			<CardHeader>
+				<div className="flex items-center gap-2">
+					{selectedMonth ? (
+						<>
+							<button
+								type="button"
+								onClick={() => setSelectedMonth(null)}
+								className="text-slate-400 hover:text-slate-200 transition-colors p-0"
+							>
+								<ArrowLeft />
+							</button>
+							{format(new Date(`${selectedMonth}-01`), "MMMM yyyy")} Daily Rides
+						</>
+					) : (
+						"Rides per Month"
+					)}
+				</div>
+			</CardHeader>
+			<div className="h-[300px] w-full relative">
+				<ResponsiveLine
+					data={chartData}
 				margin={{ top: 20, right: 20, bottom: 50, left: 50 }}
 				xScale={{ type: "point" }}
 				yScale={{ type: "linear", min: 0, max: "auto" }}
@@ -109,5 +130,6 @@ export default function RidesChart() {
 				)}
 			/>
 		</div>
+		</>
 	);
 }

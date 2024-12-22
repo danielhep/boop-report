@@ -9,7 +9,6 @@ export default function MainCards() {
 	return (
 		<div className="grid grid-cols-3 gap-4 mx-8">
 			<Card className="col-span-3">
-				<CardHeader>Rides per Month</CardHeader>
 				<RidesChart />
 			</Card>
 			<Card className="col-span-2 flex flex-col">
