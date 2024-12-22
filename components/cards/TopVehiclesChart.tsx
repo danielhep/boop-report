@@ -13,8 +13,8 @@ export default function TopVehiclesChartCard() {
                 rightContent={
                     <select
                         className="bg-background-primary text-black text-sm rounded-md border border-border px-2 py-1"
-                        value={limit?.toString() ?? "all"}
-                        onChange={(e) => setLimit(e.target.value === "all" ? null : Number(e.target.value))}
+                        value={limit?.toString() ?? "5"}
+                        onChange={(e) => setLimit(e.target.value === "5" ? null : Number(e.target.value))}
                     >
                         <option value="all">All Vehicles</option>
                         <option value="5">Top 5</option>
@@ -78,8 +78,12 @@ function TopVehiclesChart({ limit }: { limit: number | null }) {
                     tickRotation: 0,
                     legend: 'Number of Rides',
                     legendPosition: 'middle',
-                    legendOffset: -40
+                    legendOffset: -40,
+                    format: d => Math.floor(d).toString(),
+                    tickValues: 5,
                 }}
+                enableGridY={true}
+                gridYValues={Array.from({ length: 6 }, (_, i) => i * Math.ceil(Math.max(...chartData.map(d => d.rides)) / 5))}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
                 labelTextColor={{
