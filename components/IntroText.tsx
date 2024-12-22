@@ -19,7 +19,7 @@ export default function IntroText() {
 					{lastUploadDate && ` last uploaded on ${formatDate(lastUploadDate)}`}.
 				</>
 			) : (
-				"Upload your ORCA card data to see your transit usage statistics!"
+				"Upload your ORCA card data to see your transit usage statistics! All data is stored locally on your device and kept fully private."
 			)}
 		</>
 	);

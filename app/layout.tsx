@@ -32,6 +32,12 @@ export default function RootLayout({
 				className={`${NunitoSans.variable} ${OpenSans.variable} antialiased text-text-main font-nunito bg-gradient-to-b from-body-background to-body-background-secondary min-h-screen flex flex-col`}
 			>
 				<OrcaStoreProvider>
+					<div className="bg-emphasis/10 py-2 bg-black">
+						<p className="text-center text-sm text-text-muted">
+							This is an unofficial tool and is not affiliated with ORCA, Sound Transit, King County Metro,
+							or any other transit agency.
+						</p>
+					</div>
 					<header className="flex my-6 mx-8 justify-between">
 						<BoopReport />
 						<div className="flex gap-4">
