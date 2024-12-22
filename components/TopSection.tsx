@@ -1,6 +1,8 @@
+"use client"
+import IntroText from "./IntroText";
 import OrcaReader from "./OrcaReader";
+import TrashButton from "./TrashButton";
 import UploadButton from "./UploadButton";
-import { useHydratedOrcaStore } from "@/lib/store/orcaStore";
 
 export default function TopSection() {
 	return (
@@ -10,14 +12,17 @@ export default function TopSection() {
 					Boop! This is your ORCA Boop Report!
 				</h2>
 				<p className="text-text-main max-w-2xl text-xl font-bold">
-					Since the release of ORCA NextGen, passengers have made 1,242,245
-					trips using Sound Transit. See how your data compares!
+					<IntroText />	
 				</p>
 				<div className="flex gap-4">
 					<UploadButton />
-					<button type="button" className="button bg-[rgba(0,207,234,0.25)] text-primary">
+					<button 
+						type="button" 
+						className="button bg-[rgba(0,207,234,0.25)] text-primary"
+					>
 						How To Find My Data?
 					</button>
+					<TrashButton />
 				</div>
 			</div>
 			<OrcaReader/>

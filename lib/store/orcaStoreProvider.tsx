@@ -12,25 +12,35 @@ import type { OrcaStats, UnprocessedOrcaCard } from "@/lib/orca/types"
 export interface OrcaState {
   rawData: UnprocessedOrcaCard[] | null
   processedStats: OrcaStats | null
+  lastUploadDate: string | null
 }
 
 export interface OrcaActions {
   setRawData: (data: UnprocessedOrcaCard[]) => void
   processData: () => void
   uploadFiles: (files: File[]) => Promise<void>
+  clearData: () => void
 }
 
 export type OrcaStore = OrcaState & OrcaActions
 
 // Create store factory
-export const createOrcaStore = (initState: OrcaState = { rawData: null, processedStats: null }) => {
+export const createOrcaStore = (initState: OrcaState = { 
+  rawData: null, 
+  processedStats: null, 
+  lastUploadDate: null 
+}) => {
   return createStore<OrcaStore>()(
     devtools(
       persist(
         (set, get) => ({
           ...initState,
           setRawData: (data) => {
-            set({ rawData: data })
+            const existingData = get().rawData || []
+            set({ 
+              rawData: [...existingData, ...data],
+              lastUploadDate: new Date().toISOString()
+            })
             get().processData()
           },
           processData: () => {
@@ -40,14 +50,20 @@ export const createOrcaStore = (initState: OrcaState = { rawData: null, processe
             set({ processedStats: stats })
           },
           uploadFiles: async (files) => {
-            const rawData = await parseOrcaFiles(files)
-            get().setRawData(rawData)
+            const newData = await parseOrcaFiles(files)
+            get().setRawData(newData)
           },
+          clearData: () => {
+            set({ rawData: null, processedStats: null, lastUploadDate: null })
+          }
         }),
         {
           name: "orca-storage",
           storage: createJSONStorage(() => localStorage),
-          partialize: (state) => ({ rawData: state.rawData }),
+          partialize: (state) => ({ 
+            rawData: state.rawData,
+            lastUploadDate: state.lastUploadDate 
+          }),
           onRehydrateStorage: () => {
             return (state) => {
               if (state?.rawData) {
