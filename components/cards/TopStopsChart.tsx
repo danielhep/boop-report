@@ -14,7 +14,7 @@ export default function TopStopsChartCard() {
                 rightContent={
                     <select
                         className="bg-background-primary text-black text-sm rounded-md border border-border px-2 py-1"
-                        value={limit?.toString() ?? "5"}
+                        value={limit?.toString() ?? "all"}
                         onChange={(e) => setLimit(e.target.value === "all" ? null : Number(e.target.value))}
                     >
                         <option value="all">All Stops</option>
