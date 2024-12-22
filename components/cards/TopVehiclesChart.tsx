@@ -5,7 +5,7 @@ import { CardHeader } from "../Card";
 import { useState } from "react";
 
 export default function TopVehiclesChartCard() {
-    const [limit, setLimit] = useState<number | null>(null);
+    const [limit, setLimit] = useState<number | null>(5);
 
     return (
         <>

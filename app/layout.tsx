@@ -4,6 +4,7 @@ import "./globals.css";
 import BoopReport from "@/components/BoopReport";
 import { Award, CalendarCheck } from "lucide-react";
 import { OrcaStoreProvider } from "@/lib/store/orcaStoreProvider";
+import Footer from "@/components/Footer";
 
 const NunitoSans = Nunito_Sans({
 	subsets: ["latin"],
@@ -28,7 +29,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${NunitoSans.variable} ${OpenSans.variable} antialiased text-text-main font-nunito bg-gradient-to-b from-body-background to-body-background-secondary min-h-screen`}
+				className={`${NunitoSans.variable} ${OpenSans.variable} antialiased text-text-main font-nunito bg-gradient-to-b from-body-background to-body-background-secondary min-h-screen flex flex-col`}
 			>
 				<OrcaStoreProvider>
 					<header className="flex my-6 mx-8 justify-between">
@@ -43,6 +44,7 @@ export default function RootLayout({
 						</div>
 					</header>
 					{children}
+					<Footer />
 				</OrcaStoreProvider>
 			</body>
 		</html>
