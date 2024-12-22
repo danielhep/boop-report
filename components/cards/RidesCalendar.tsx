@@ -65,7 +65,7 @@ function RidesCalendar() {
     };
 
     return (
-        <div className="h-[400px] md:h-full w-full relative">
+        <div className="h-[90vh] md:h-full w-full relative">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 md:left-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 flex md:flex-col items-center gap-2 z-10">
                 <button 
                     type="button"

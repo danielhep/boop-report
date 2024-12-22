@@ -55,7 +55,7 @@ function TopStopsChart({ limit }: { limit: number | null }) {
                 data={chartData}
                 keys={['visits']}
                 indexBy="label"
-                margin={{ top: 20, right: 20, bottom: 60, left: 60 }}
+                margin={{ top: 10, right: 20, bottom: 70, left: 30 }}
                 padding={0.3}
                 layout="vertical"
                 colors={{ scheme: 'paired' }}
@@ -69,9 +69,6 @@ function TopStopsChart({ limit }: { limit: number | null }) {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 45,
-                    legend: 'Stop Name',
-                    legendPosition: 'middle',
-                    legendOffset: 45,
                 }}
                 axisLeft={{
                     tickSize: 5,

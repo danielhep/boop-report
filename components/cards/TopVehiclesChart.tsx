@@ -55,7 +55,7 @@ function TopVehiclesChart({ limit }: { limit: number | null }) {
                 data={chartData}
                 keys={['rides']}
                 indexBy="label"
-                margin={{ top: 20, right: 20, bottom: 60, left: 60 }}
+                margin={{ top: 10, right: 20, bottom: 70, left: 20 }}
                 padding={0.3}
                 layout="vertical"
                 colors={{ scheme: 'paired' }}
@@ -69,9 +69,6 @@ function TopVehiclesChart({ limit }: { limit: number | null }) {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 45,
-                    legend: 'Vehicle ID',
-                    legendPosition: 'middle',
-                    legendOffset: 45,
                 }}
                 axisLeft={{
                     tickSize: 5,
