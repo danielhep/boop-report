@@ -3,6 +3,7 @@ import { ResponsiveBar } from "@nivo/bar";
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 import { CardHeader } from "../Card";
 import { useState } from "react";
+import { getAgencyAbbreviation } from "@/lib/utils/agencyAbbreviations";
 
 export default function TopVehiclesChartCard() {
     const [limit, setLimit] = useState<number | null>(5);
@@ -45,7 +46,7 @@ function TopVehiclesChart({ limit }: { limit: number | null }) {
             vehicleId: vehicle.vehicleId,
             agency: vehicle.agencyName,
             rides: vehicle.count,
-            label: `${vehicle.vehicleId} (${vehicle.agencyName})`
+            label: `${vehicle.vehicleId} (${getAgencyAbbreviation(vehicle.agencyName)})`
         }));
 
     return (
