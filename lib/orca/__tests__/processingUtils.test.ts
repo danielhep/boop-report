@@ -24,6 +24,7 @@ describe("Route name processing", () => {
 					console.log("  {");
 					console.log(`    line: "${route.line}",`);
 					console.log(`    agency: "${route.agency}"`);
+					console.log(`    time: "${route.time.toISOString()}"`);
 					console.log("  },");
 				}
 			}

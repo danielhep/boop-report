@@ -1,8 +1,4 @@
-import {
-	differenceInMilliseconds,
-	isBefore,
-	parse,
-} from "date-fns";
+import { differenceInMilliseconds, isBefore, parse } from "date-fns";
 import Papa from "papaparse";
 import {
 	type OrcaCSVRow,
@@ -28,9 +24,14 @@ import {
 	vehicleOccurrences,
 	stopOccurrences,
 } from "./basicStats";
-import { dollarStringToNumber, parseActivity, parseReaderNumber } from "./propertyTransformations";
+import {
+	dollarStringToNumber,
+	parseActivity,
+	parseReaderNumber,
+} from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 import { AUG_2024_SERVICE_CHANGE_DATE } from "./consts";
+import routeNameMap from "./gtfs/routeNameMap.json";
 
 function isFile(file: unknown): file is File {
 	return file instanceof File;
@@ -55,9 +56,12 @@ async function parseFile(file: File | string): Promise<UnprocessedOrcaCard> {
 	});
 }
 
-function lineToRouteShortName(time: Date, string?: string): string | undefined {
+function lineToRouteShortName(
+	time: Date,
+	lineString?: string,
+): string | undefined {
 	//many of the below are based on guesswork, ORCA has a lot of weird cases
-	switch (string) {
+	switch (lineString) {
 		//rail services
 		case "First Hill Streetcar Streetcar: Pioneer Square - Capitol Hill":
 			return "FH Streetcar";
@@ -133,6 +137,10 @@ function lineToRouteShortName(time: Date, string?: string): string | undefined {
 			return "KCM Unknown";
 		case "Default ST Bus":
 			return "ST Bus Uknown";
+		case "Northgate Station - Shoreline Link Stations":
+			return "365";
+		case "Lake City - Northgate - Greenwood":
+			return "61";
 		// Community Transit 900 routes
 		case "Lynnwood City Center Station - Silver Firs":
 			return "901";
@@ -140,6 +148,18 @@ function lineToRouteShortName(time: Date, string?: string): string | undefined {
 			return "909";
 		case "Lynnwood City Center Station - Mukilteo Ferry Terminal":
 			return "117";
+		case "Ash Way Park & Ride - Canyon Park Park & Ride/UW Bothell":
+			return "121";
+		case "Lynnwood City Center Station - Stanwood Downtown Park & Ride":
+			return "905";
+		case "Lynnwood City Center Station - Marysville":
+			return "904";
+		case "Lynnwood City Center Station - Lake Stevens Transit Center":
+			return "903";
+		case "Edmonds Station - Silver Firs":
+			return "906";
+		case "Lynnwood City Center Station - Everett Station":
+			return "166";
 	}
 }
 
@@ -288,14 +308,18 @@ function findProblematicData(orcaData: ProcessedOrcaCard[]) {
 	}
 }
 
-function aggregateExtraDataObjects(cardData: ProcessedOrcaCard[]): ExtraDataType {
+function aggregateExtraDataObjects(
+	cardData: ProcessedOrcaCard[],
+): ExtraDataType {
 	const extraDataObjects = cardData.map((cd) => cd.extraData);
 
 	const routeOccurrences = extraDataObjects
 		.flatMap((edo) => edo.routeOccurrences)
 		.reduce<IndividualRouteOccurrences[]>((prev, cur) => {
 			const indexOfMatch = prev.findIndex(
-				(p) => p.routeShortName === cur.routeShortName && p.agencyName === cur.agencyName,
+				(p) =>
+					p.routeShortName === cur.routeShortName &&
+					p.agencyName === cur.agencyName,
 			);
 			if (indexOfMatch !== -1) {
 				prev[indexOfMatch].count += cur.count;
@@ -335,7 +359,7 @@ function aggregateExtraDataObjects(cardData: ProcessedOrcaCard[]): ExtraDataType
 		.flatMap((edo) => edo.stopOccurrences)
 		.reduce<StopOccurrence[]>((prev, cur) => {
 			const indexOfMatch = prev.findIndex(
-				(p) => p.stop === cur.stop && p.agencyName === cur.agencyName
+				(p) => p.stop === cur.stop && p.agencyName === cur.agencyName,
 			);
 			if (indexOfMatch !== -1) {
 				prev[indexOfMatch].count += cur.count;
