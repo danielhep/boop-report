@@ -26,12 +26,12 @@ export default function HowToFindDataModal({ isOpen, onClose }: HowToFindDataMod
                     <ol className="list-decimal pl-6 space-y-4">
                         <li>Go to the <a href="https://myorca.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">myORCA website</a></li>
                         <li>Sign in to your account</li>
-                        <li>Click on &quot;Card Activity&quot; in the navigation menu</li>
-                        <li>Select the date range you want to download (up to 2 years of history)</li>
-                        <li>Click the &quot;Download&quot; button to get your CSV file</li>
+                        <li>Link any ORCA cards that you want to see your data from, if not already linked</li>
+                        <li>For each card, click &quot;Manage This Card&quot; then &quot;Card Activity&quot;</li>
+                        <li>Scroll down and click &quot;Download CSV&quot;</li>
+                        <li><strong>You can upload multiple CSV files and we will merge them!</strong></li>
                     </ol>
-                    <div className="mt-8 flex flex-col gap-4">
-                        <p className="font-semibold">Ready to upload your data?</p>
+                    <div className="mt-4 flex flex-col gap-4">
                         <div className="flex gap-4">
                             <UploadButton />
                             <button
