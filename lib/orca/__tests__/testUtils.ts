@@ -3,13 +3,14 @@ import type { OrcaCSVRow, OrcaStats } from "../types";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
-export function findUndefinedRouteNames(rows: OrcaCSVRow[]): {line: string | undefined, agency: string}[] {
+export function findUndefinedRouteNames(rows: OrcaCSVRow[]): {line: string | undefined, agency: string, time: Date}[] {
     const processed = processAllRows(rows);
     return processed
       .filter(row => row.routeShortName === undefined && row.line !== undefined)
       .map(row => ({
         line: row.line,
-        agency: row.agency
+        agency: row.agency,
+        time: row.time
       }))
       .filter((value, index, self) => 
         // Remove duplicates
