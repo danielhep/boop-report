@@ -34,7 +34,7 @@ export default function UploadButton() {
 				onClick={handleClick}
 				className="button bg-primary text-black"
 			>
-				<Upload /> Upload New Data
+				<Upload /> Upload ORCA CSV
 			</button>
 		</>
 	);
