@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@nivo/axes':
+        specifier: ^0.88.0
+        version: 0.88.0(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       '@nivo/bar':
         specifier: ^0.88.0
         version: 0.88.0(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)

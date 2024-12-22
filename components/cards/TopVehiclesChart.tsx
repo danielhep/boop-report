@@ -1,8 +1,10 @@
 "use client";
 import { ResponsiveBar } from "@nivo/bar";
+import { AxisTickProps } from "@nivo/axes";
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 import { CardHeader } from "../Card";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import AgencyIcon from '../AgencyIcon';
 
 export default function TopVehiclesChartCard() {
     const [limit, setLimit] = useState<number | null>(5);
@@ -68,9 +70,9 @@ function TopVehiclesChart({ limit }: { limit: number | null }) {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 45,
-                    legend: 'Vehicle ID',
                     legendPosition: 'middle',
                     legendOffset: 45,
+                    renderTick: CustomTick
                 }}
                 axisLeft={{
                     tickSize: 5,
@@ -121,4 +123,39 @@ function TopVehiclesChart({ limit }: { limit: number | null }) {
             />
         </div>
     );
-} 
+}
+
+const CustomTick = ({ value, x, y }: AxisTickProps<string>) => {
+    const textRef = useRef<SVGTextElement>(null);
+    const [textWidth, setTextWidth] = useState(0);
+    const vehicleId = value.split(" (")[0];
+    const agencyName = value.match(/\((.*?)\)/)?.[1] ?? '';
+    
+    useEffect(() => {
+        if (textRef.current) {
+            setTextWidth(textRef.current.getBBox().width);
+        }
+    }, [value]);
+    
+    return (
+        <g transform={`translate(${x}, ${y})`}>
+            <g transform="translate(0, 10) rotate(45)">
+                <text
+                    ref={textRef}
+                    style={{ fill: 'var(--text-main)' }}
+                    dominantBaseline="middle"
+                >
+                    {vehicleId}
+                </text>
+                <foreignObject
+                    x={textWidth + 5}
+                    y="-10"
+                    width="20"
+                    height="20"
+                >
+                    <AgencyIcon agencyName={agencyName} />
+                </foreignObject>
+            </g>
+        </g>
+    );
+}; 
