@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function RidesChart() {
 	const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
 	const ridesByDate = useOrcaStore(
-		(state) => state.processedStats?.aggregateExtraData.ridesByDate 
+		(state) => state.processedStats?.aggregateExtraData.ridesByDate,
 	);
 
 	if (!ridesByDate) return null;
@@ -20,17 +20,17 @@ export default function RidesChart() {
 			acc[monthKey] = (acc[monthKey] || 0) + curr.value;
 			return acc;
 		},
-		{}
+		{},
 	);
 
 	// For daily view when a month is selected
 	const dailyData = selectedMonth
 		? ridesByDate
-			.filter((ride) => format(ride.jsDate, "yyyy-MM") === selectedMonth)
-			.map((ride) => ({
-				x: format(ride.jsDate, "dd MMM"),
-				y: ride.value,
-			}))
+				.filter((ride) => format(ride.jsDate, "yyyy-MM") === selectedMonth)
+				.map((ride) => ({
+					x: format(ride.jsDate, "dd MMM"),
+					y: ride.value,
+				}))
 		: [];
 
 	// Create data in Nivo format
@@ -40,15 +40,17 @@ export default function RidesChart() {
 			data: selectedMonth
 				? dailyData
 				: Object.entries(monthlyData).map(([month, value]) => ({
-						x: format(new Date(month), "MMM yyyy"),
-                        date: new Date(month),
+						x: format(new Date(`${month}-01T12:00:00`), "MMM yyyy"),
+						date: new Date(`${month}-01T12:00:00`),
 						y: value,
-				  })),
+					})),
 		},
 	];
 
+	console.log(chartData)
+
 	const handleClick = (point: Point) => {
-        console.log(point)
+		console.log(point);
 		if (!selectedMonth) {
 			// When viewing months, clicking sets the selected month
 			// @ts-expect-error the typescript is wrong because Nivo doesn't pass through the date that we are adding to the data
