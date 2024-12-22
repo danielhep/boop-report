@@ -15,7 +15,7 @@ export default function TopVehiclesChartCard() {
                     <select
                         className="bg-background-primary text-black text-sm rounded-md border border-border px-2 py-1"
                         value={limit?.toString() ?? "5"}
-                        onChange={(e) => setLimit(e.target.value === "5" ? null : Number(e.target.value))}
+                        onChange={(e) => setLimit(e.target.value === "all" ? null : Number(e.target.value))}
                     >
                         <option value="all">All Vehicles</option>
                         <option value="5">Top 5</option>
@@ -24,7 +24,7 @@ export default function TopVehiclesChartCard() {
                     </select>
                 }
             >
-                Most Frequently Used Vehicles
+              Top Buses Ridden
             </CardHeader>
             <TopVehiclesChart limit={limit} />
         </>

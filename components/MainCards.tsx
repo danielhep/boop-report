@@ -23,7 +23,6 @@ export default function MainCards() {
 				<TopAgenciesChart />
 			</Card>
 			<Card>
-				<CardHeader>Top Vehicles</CardHeader>
 				<TopVehiclesChart />
 			</Card>
 		</div>
