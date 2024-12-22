@@ -3,7 +3,7 @@ import { ResponsiveCalendar } from "@nivo/calendar";
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 import { format, getYear, isWithinInterval, startOfYear, endOfYear } from "date-fns";
 import { ArrowUp, ArrowDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function RidesCalendarCard() {
     return (
@@ -17,7 +17,22 @@ function RidesCalendar() {
     const ridesByDate = useOrcaStore(
         (state) => state.processedStats?.aggregateExtraData.ridesByDate
     );
+    const [isMobile, setIsMobile] = useState(false);
 
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        
+        // Initial check
+        checkMobile();
+        
+        // Add event listener
+        window.addEventListener('resize', checkMobile);
+        
+        // Cleanup
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Get available years from the data
     const years = ridesByDate ? [...new Set(ridesByDate.map(ride => getYear(ride.jsDate)))].sort() : [] ;
@@ -50,8 +65,8 @@ function RidesCalendar() {
     };
 
     return (
-        <div className="h-full w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+        <div className="h-[400px] md:h-full w-full relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 md:left-0 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 flex md:flex-col items-center gap-2 z-10">
                 <button 
                     type="button"
                     onClick={() => handleYearChange('up')}
@@ -70,18 +85,19 @@ function RidesCalendar() {
                     <ArrowDown size={20} />
                 </button>
             </div>
-            <div className="pl-16 h-full">
+            <div className="pt-12 md:pt-0 md:pl-16 h-full">
                 <ResponsiveCalendar
                     data={calendarData}
                     from={new Date(selectedYear, 0, 1)}
                     to={new Date(selectedYear, 11, 31)}
                     emptyColor="var(--background-secondary)"
                     colors={["#0c4a6e", "#0369a1", "#0284c7", "#0ea5e9", "#38bdf8"]}
-                    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                    margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
                     yearSpacing={40}
                     monthBorderColor="var(--primary)"
                     dayBorderWidth={2}
                     dayBorderColor="var(--background-secondary)"
+                    direction={isMobile ? "vertical" : "horizontal"}
                     theme={{
                         text: {
                             fill: "var(--text-main)",
@@ -94,7 +110,7 @@ function RidesCalendar() {
                     }}
                     legends={[
                         {
-                            anchor: "bottom-right",
+                            anchor: "bottom",
                             direction: "row",
                             translateY: 36,
                             itemCount: 4,

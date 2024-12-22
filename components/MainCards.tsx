@@ -8,11 +8,11 @@ import TopStopsChartCard from "./cards/TopStopsChart";
 
 export default function MainCards() {
 	return (
-		<div className="grid grid-cols-3 gap-4 mx-8">
-			<Card className="col-span-3">
+		<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-8">
+			<Card className="md:col-span-3">
 				<RidesChart />
 			</Card>
-			<Card className="col-span-2 flex flex-col">
+			<Card className="md:col-span-2 flex flex-col">
 				<CardHeader>Ride Calendar</CardHeader>
 				<RidesCalendar />
 			</Card>

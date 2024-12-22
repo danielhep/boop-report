@@ -38,13 +38,13 @@ export default function RootLayout({
 							or any other transit agency.
 						</p>
 					</div>
-					<header className="flex my-6 mx-8 justify-between">
+					<header className="flex flex-col md:flex-row my-6 mx-8 gap-4 md:gap-0 md:justify-between">
 						<BoopReport />
-						<div className="flex gap-4">
-							<button type="button" className="button bg-primary text-black">
+						<div className="flex flex-wrap gap-4 justify-center md:justify-end">
+							<button type="button" className="button bg-primary text-black w-full md:w-auto">
 								<CalendarCheck /> View Yearly ORCA Wrapped
 							</button>
-							<button type="button" className="button bg-emphasis text-black">
+							<button type="button" className="button bg-emphasis text-black w-full md:w-auto">
 								<Award /> Badges
 							</button>
 						</div>
