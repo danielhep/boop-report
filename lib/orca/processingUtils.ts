@@ -431,18 +431,24 @@ function aggregateExtraDataObjects(
 
 export function generateOrcaStats(
 	unprocessedOrcaData: UnprocessedOrcaCard[],
+	filter2024 = false,
 ): OrcaStats {
 	const processedData: ProcessedOrcaCard[] =
 		unprocessedOrcaData.map(processOrcaCard);
+	if (filter2024) {
+		for (const card of processedData) {
+			card.processed = card.processed.filter(row => row.time.getFullYear() === 2024);
+			card.extraData = generateExtraDataObject(card.processed);
+		}
+	}
 
 	findProblematicData(processedData);
-	// In the future we can add extra elements to the app state here
 	return {
 		orcaData: processedData,
 		aggregateExtraData: aggregateExtraDataObjects(processedData),
-		totalRowCount: processedData
-			.map((pd) => pd.processed)
-			.reduce((prev, cur) => cur.length + prev, 0),
+			totalRowCount: processedData
+				.map((pd) => pd.processed)
+				.reduce((prev, cur) => cur.length + prev, 0),
 	};
 }
 

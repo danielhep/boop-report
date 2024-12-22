@@ -3,8 +3,12 @@ import IntroText from "./IntroText";
 import OrcaReader from "./OrcaReader";
 import TrashButton from "./TrashButton";
 import UploadButton from "./UploadButton";
+import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 
 export default function TopSection() {
+	const filter2024 = useOrcaStore((state) => state.filter2024);
+	const setFilter2024 = useOrcaStore((state) => state.setFilter2024);
+
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-4 mx-8 gap-4">
 			<div className="md:col-span-3 flex flex-col gap-4 justify-center">
@@ -24,6 +28,15 @@ export default function TopSection() {
 					</button>
 					<TrashButton />
 				</div>
+					<label className="flex items-center gap-2 text-text-main">
+						<input
+							type="checkbox"
+							checked={filter2024}
+							onChange={(e) => setFilter2024(e.target.checked)}
+							className="form-checkbox h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary"
+						/>
+						Show 2024 data only
+					</label>
 			</div>
 			<OrcaReader/>
 		</div>

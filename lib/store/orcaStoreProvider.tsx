@@ -13,6 +13,7 @@ export interface OrcaState {
   rawData: UnprocessedOrcaCard[] | null
   processedStats: OrcaStats | null
   lastUploadDate: string | null
+  filter2024: boolean
 }
 
 export interface OrcaActions {
@@ -20,6 +21,7 @@ export interface OrcaActions {
   processData: () => void
   uploadFiles: (files: File[]) => Promise<void>
   clearData: () => void
+  setFilter2024: (filter: boolean) => void
 }
 
 export type OrcaStore = OrcaState & OrcaActions
@@ -28,7 +30,8 @@ export type OrcaStore = OrcaState & OrcaActions
 export const createOrcaStore = (initState: OrcaState = { 
   rawData: null, 
   processedStats: null, 
-  lastUploadDate: null 
+  lastUploadDate: null,
+  filter2024: false
 }) => {
   return createStore<OrcaStore>()(
     devtools(
@@ -45,8 +48,9 @@ export const createOrcaStore = (initState: OrcaState = {
           },
           processData: () => {
             const rawData = get().rawData
+            const filter2024 = get().filter2024
             if (!rawData) return
-            const stats = generateOrcaStats(rawData)
+            const stats = generateOrcaStats(rawData, filter2024)
             set({ processedStats: stats })
           },
           uploadFiles: async (files) => {
@@ -55,6 +59,10 @@ export const createOrcaStore = (initState: OrcaState = {
           },
           clearData: () => {
             set({ rawData: null, processedStats: null, lastUploadDate: null })
+          },
+          setFilter2024: (filter) => {
+            set({ filter2024: filter })
+            get().processData()
           }
         }),
         {
@@ -62,7 +70,8 @@ export const createOrcaStore = (initState: OrcaState = {
           storage: createJSONStorage(() => localStorage),
           partialize: (state) => ({ 
             rawData: state.rawData,
-            lastUploadDate: state.lastUploadDate 
+            lastUploadDate: state.lastUploadDate,
+            filter2024: state.filter2024
           }),
           onRehydrateStorage: () => {
             return (state) => {
