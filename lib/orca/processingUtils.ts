@@ -31,7 +31,6 @@ import {
 } from "./propertyTransformations";
 import { findTripsFromTaps } from "./findTripsFromTaps";
 import { AUG_2024_SERVICE_CHANGE_DATE } from "./consts";
-import routeNameMap from "./gtfs/routeNameMap.json";
 
 function isFile(file: unknown): file is File {
 	return file instanceof File;
