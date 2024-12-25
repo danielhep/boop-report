@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Nunito_Sans, Open_Sans } from "next/font/google";
 import "./globals.css";
 import BoopReport from "@/components/BoopReport";
-import { Award, CalendarCheck } from "lucide-react";
 import { OrcaStoreProvider } from "@/lib/store/orcaStoreProvider";
 import Footer from "@/components/Footer";
 import DragDropZone from "@/components/DragDropZone";
+import HeaderActions from "@/components/HeaderActions";
 
 const NunitoSans = Nunito_Sans({
 	subsets: ["latin"],
@@ -42,14 +42,7 @@ export default function RootLayout({
 						</div>
 						<header className="flex flex-col md:flex-row my-6 mx-8 gap-4 md:gap-0 md:justify-between">
 							<BoopReport />
-							<div className="flex flex-wrap gap-4 justify-center md:justify-end">
-								<button type="button" className="button bg-primary text-black w-full md:w-auto">
-									<CalendarCheck /> View Yearly ORCA Wrapped
-								</button>
-								<button type="button" className="button bg-emphasis text-black w-full md:w-auto">
-									<Award /> Badges
-								</button>
-							</div>
+							<HeaderActions />
 						</header>
 						{children}
 						<Footer />
