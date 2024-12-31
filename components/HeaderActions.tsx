@@ -1,5 +1,4 @@
 "use client";
-import { Award } from "lucide-react";
 import { useState } from "react";
 import BadgeDialog from "./badges/BadgeDialog";
 
