@@ -2,6 +2,7 @@
 
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function DragDropZone({ children }: { children: React.ReactNode }) {
 	const uploadFiles = useOrcaStore((state) => state.uploadFiles);
@@ -10,13 +11,17 @@ export default function DragDropZone({ children }: { children: React.ReactNode }
 	const handleDragOver = (e: React.DragEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (!isDragging) setIsDragging(true);
+		if (!isDragging) {
+			setIsDragging(true);
+			trackEvent('drag_over_start');
+		}
 	};
 
 	const handleDragLeave = (e: React.DragEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		setIsDragging(false);
+		trackEvent('drag_over_end');
 	};
 
 	const handleDrop = async (e: React.DragEvent) => {
@@ -29,6 +34,7 @@ export default function DragDropZone({ children }: { children: React.ReactNode }
 		);
 
 		if (files.length > 0) {
+			trackEvent('drop_files', { count: files.length });
 			await uploadFiles(files);
 		}
 	};

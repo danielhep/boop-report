@@ -3,6 +3,7 @@
 import { Upload } from "lucide-react";
 import { useRef } from "react";
 import { useOrcaStore } from "@/lib/store/orcaStoreProvider";
+import { trackEvent } from "@/lib/analytics";
 
 export default function UploadButton() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -15,6 +16,7 @@ export default function UploadButton() {
 	const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		const files = Array.from(event.target.files || []);
 		if (files.length > 0) {
+			trackEvent('upload_files', { count: files.length });
 			await uploadFiles(files);
 		}
 	};
