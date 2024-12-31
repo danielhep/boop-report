@@ -21,6 +21,17 @@ const OpenSans = Open_Sans({
 export const metadata: Metadata = {
 	title: "Boop Report",
 	description: "ORCA Card Boop Report",
+	openGraph: {
+		title: "Boop Report",
+		description: "View and analyze your ORCA card travel history",
+		type: "website",
+		url: "https://boop.report",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Boop Report",
+		description: "View and analyze your ORCA card travel history",
+	},
 };
 
 export default function RootLayout({
