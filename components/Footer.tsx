@@ -16,7 +16,7 @@ export default function Footer() {
           </Link>
           ,{" "}
           <Link
-            href="https://github.com/"
+            href="https://github.com/christatebbs"
             className="text-text-main hover:underline"
             target="_blank"
           >
@@ -24,7 +24,7 @@ export default function Footer() {
           </Link>
           , and{" "}
           <Link
-            href="https://github.com/"
+            href="https://www.konafarry.com/"
             className="text-text-main hover:underline"
             target="_blank"
           >
