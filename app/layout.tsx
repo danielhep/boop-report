@@ -6,6 +6,7 @@ import { OrcaStoreProvider } from "@/lib/store/orcaStoreProvider";
 import Footer from "@/components/Footer";
 import DragDropZone from "@/components/DragDropZone";
 import HeaderActions from "@/components/HeaderActions";
+import Script from "next/script";
 
 const NunitoSans = Nunito_Sans({
 	subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<Script defer src="https://umami.danielhep.me/script.js" data-website-id="352e1e00-b9ae-42c1-b4de-489978ee0ad3" />
 			<body
 				className={`${NunitoSans.variable} ${OpenSans.variable} antialiased text-text-main font-nunito bg-gradient-to-b from-body-background to-body-background-secondary`}
 			>
